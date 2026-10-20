@@ -1,6 +1,6 @@
 // scripts/new-video.mjs
-// নতুন ভিডিও তৈরির জন্য প্রজেক্ট প্রস্তুত করে এবং পুরনো ভিডিওকে archived-videos/ ফোল্ডারে নিরাপদে সংরক্ষণ করে।
-// রান করার নিয়ম: npm run new-video [ঐচ্ছিক-ভিডিওর-নাম]
+// Prepares project for a new video and safely archives previous video into archived-videos/
+// Usage: npm run new-video [optional-video-name]
 
 import fs from "node:fs";
 import path from "node:path";
@@ -23,8 +23,8 @@ console.log("==================================================");
 console.log("✨ Remotion Motion Graphics - Start New Video");
 console.log("==================================================\n");
 
-// ১. আগের কাজ থাকলে তা আর্কাইভে ব্যাকআপ করা
-const hasPreviousSrt = fs.existsSync(path.join(inputDir, "voiceover.srt"));
+// 1. Check if previous work exists (any .srt or custom scenes)
+const hasPreviousSrt = fs.existsSync(inputDir) && fs.readdirSync(inputDir).some((f) => f.toLowerCase().endsWith(".srt"));
 const hasCustomScenes = fs.existsSync(path.join(videoDir, "scenes")) && fs.readdirSync(path.join(videoDir, "scenes")).length > 0;
 
 if (hasPreviousSrt || hasCustomScenes) {
@@ -37,36 +37,36 @@ if (hasPreviousSrt || hasCustomScenes) {
     fs.cpSync(videoDir, path.join(archiveDir, "video"), { recursive: true });
   }
 
-  console.log(`📦 আপনার আগের ভিডিওর ফাইলগুলো নিরাপদে সংরক্ষণ করা হয়েছে:`);
-  console.log(`   ফোল্ডার: archived-videos/${path.basename(archiveDir)}/\n`);
+  console.log(`📦 Previous video files successfully archived:`);
+  console.log(`   Location: archived-videos/${path.basename(archiveDir)}/\n`);
 }
 
-// ২. input-content ফোল্ডার ফ্রেশ করা
+// 2. Fresh input-content folder
 if (fs.existsSync(inputDir)) {
   fs.rmSync(inputDir, { recursive: true, force: true });
 }
 const freshInputDir = path.join(projectRoot, "input-content");
 fs.mkdirSync(path.join(freshInputDir, "assets"), { recursive: true });
 
-const briefTemplate = `# নতুন ভিডিওর নির্দেশনা ও বিবরণী (Video Brief)
+const briefTemplate = `# Video Brief & Instructions
 
-## ১. ক্লায়েন্ট বা ভিডিওর ধরন
-- বিষয়বস্তু: 
-- কালার স্কিম পছন্দ (যদি থাকে): 
-- ভিডিওর সাইজ (landscape / reel / square): landscape
+## 1. Topic & Client
+- Topic:
+- Preferred Color Scheme:
+- Video Aspect Ratio (landscape / reel / square): landscape
 
-## ২. অ্যাসেট চেকলিস্ট
-- [ ] voiceover.srt ফাইল input-content/ ফোল্ডারে যোগ করেছি
-- [ ] voiceover.mp3 বা অডিও ফাইল input-content/ ফোল্ডারে যোগ করেছি
-- [ ] লোগো বা ছবি থাকলে input-content/assets/ ফোল্ডারে রেখেছি
+## 2. Asset Checklist
+- [ ] Subtitle file (.srt) added to input-content/
+- [ ] Voiceover audio file (.mp3 / .wav) added to input-content/
+- [ ] Logos or images placed in input-content/assets/
 
-## ৩. অতিরিক্ত তথ্য বা টেক্সট (যদি থাকে)
+## 3. Special Notes
 - 
 `;
 
 fs.writeFileSync(path.join(freshInputDir, "brief.md"), briefTemplate, "utf8");
 
-// ৩. src/video ফোল্ডার রিসেট করা
+// 3. Reset src/video folder
 if (fs.existsSync(videoDir)) {
   fs.rmSync(videoDir, { recursive: true, force: true });
 }
@@ -75,12 +75,10 @@ fs.mkdirSync(path.join(videoDir, "scenes"), { recursive: true });
 const planCode = `/**
  * src/video/scene-plan.ts
  * -------------------------------------------------------------
- * ⭐ চলতি ভিডিওর সিন তালিকা।
+ * ⭐ Active video scene registration.
  *
- * নতুন SRT যুক্ত করার পর 'npm run prepare-video' চালালে
- * স্বয়ংক্রিয়ভাবে অটো ড্রাফট সিন চালু হয়ে যায়।
- *
- * এজেন্ট বা আপনি কাস্টম সিন লিখতে চাইলে এই ফাইলটি আপডেট করবেন।
+ * Runs auto-draft scenes by default once .srt is prepared.
+ * AI agents will replace this with custom crafted scenes.
  */
 import { generateAutoDraftScenes } from "../lib/auto-draft-scenes";
 
@@ -89,18 +87,18 @@ export const SCENES = generateAutoDraftScenes();
 
 fs.writeFileSync(path.join(videoDir, "scene-plan.ts"), planCode, "utf8");
 
-// ৪. public ফোল্ডার থেকে পুরনো ভিডিওর অডিও ও অ্যাসেট পরিষ্কার করা
+// 4. Clean previous voiceover audio & assets from public
 const publicAssetsDir = path.join(publicDir, "assets");
 if (fs.existsSync(publicAssetsDir)) {
   fs.rmSync(publicAssetsDir, { recursive: true, force: true });
   fs.mkdirSync(publicAssetsDir, { recursive: true });
 }
-for (const ext of [".mp3", ".wav", ".m4a", ".aac"]) {
+for (const ext of [".mp3", ".wav", ".m4a", ".aac", ".ogg", ".flac"]) {
   const oldAudio = path.join(publicDir, `voiceover${ext}`);
   if (fs.existsSync(oldAudio)) fs.rmSync(oldAudio, { force: true });
 }
 
-// ৫. ডামি cues ও assets তৈরি
+// 5. Initialize clean cues and assets
 const generatedDir = path.join(projectRoot, "src", "generated");
 if (!fs.existsSync(generatedDir)) fs.mkdirSync(generatedDir, { recursive: true });
 
@@ -116,10 +114,10 @@ fs.writeFileSync(
   "utf8"
 );
 
-console.log("✅ প্রজেক্টটি নতুন ভিডিও তৈরির জন্য পুরোপুরি প্রস্তুত!");
-console.log("\n👉 পরবর্তী ধাপ:");
-console.log("১. আপনার 'voiceover.srt' এবং 'voiceover.mp3' ফাইল দুটি 'input/' ফোল্ডারে রাখুন।");
-console.log("২. কোনো লোগো বা ছবি থাকলে তা 'input/assets/' ফোল্ডারে রাখুন।");
-console.log("৩. টার্মিনালে চালান: npm run prepare-video");
-console.log("৪. প্রিভিউ দেখতে চালান: npm run studio");
+console.log("✅ Project is fresh and ready for your new video!");
+console.log("\n👉 Next steps:");
+console.log("1. Drop your subtitle file (.srt) and voiceover audio into 'input-content/'.");
+console.log("2. (Optional) Place logos/images in 'input-content/assets/'.");
+console.log("3. Run: npm run prepare-video");
+console.log("4. Run: npm run studio");
 console.log("==================================================");

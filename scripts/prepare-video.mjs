@@ -1,6 +1,6 @@
 // scripts/prepare-video.mjs
-// input-content/ ফোল্ডারের SRT, অডিও ও অ্যাসেট প্রসেস করে src/generated/ এবং public/ এ প্রস্তুত করে।
-// রান করার নিয়ম: npm run prepare-video
+// Auto-discovers any .srt, audio (.mp3/.wav/etc.), and visual assets by FORMAT/EXTENSION from input-content/
+// Usage: npm run prepare-video
 
 import fs from "node:fs";
 import path from "node:path";
@@ -12,7 +12,7 @@ const inputDir = fs.existsSync(path.join(projectRoot, "input-content"))
 const publicDir = path.join(projectRoot, "public");
 const generatedDir = path.join(projectRoot, "src", "generated");
 
-// ফোল্ডার তৈরি নিশ্চিত করা
+// Ensure essential folders exist
 if (!fs.existsSync(generatedDir)) fs.mkdirSync(generatedDir, { recursive: true });
 if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir, { recursive: true });
 const publicAssetsDir = path.join(publicDir, "assets");
@@ -22,11 +22,22 @@ console.log("==================================================");
 console.log("🎬 Remotion Motion Graphics - Video Asset Preparation");
 console.log("==================================================\n");
 
-// ১. SRT ফাইল পার্সিং
-const srtPath = path.join(inputDir, "voiceover.srt");
+// 1. SRT FILE AUTO-DISCOVERY BY FORMAT/EXTENSION (.srt)
+let foundSrtFilename = null;
 let cues = [];
 
-if (fs.existsSync(srtPath)) {
+if (fs.existsSync(inputDir)) {
+  const inputFiles = fs.readdirSync(inputDir);
+  
+  // Prioritize files named voiceover.srt, then starting with voiceover, then ANY .srt file
+  foundSrtFilename =
+    inputFiles.find((f) => f.toLowerCase() === "voiceover.srt") ||
+    inputFiles.find((f) => f.toLowerCase().startsWith("voiceover") && f.toLowerCase().endsWith(".srt")) ||
+    inputFiles.find((f) => f.toLowerCase().endsWith(".srt"));
+}
+
+if (foundSrtFilename) {
+  const srtPath = path.join(inputDir, foundSrtFilename);
   const rawSrt = fs.readFileSync(srtPath, "utf8").replace(/\r/g, "");
   const blocks = rawSrt.trim().split(/\n\s*\n/);
 
@@ -49,26 +60,32 @@ if (fs.existsSync(srtPath)) {
       }
     }
   }
-  console.log(`✅ [SRT] সফলভাবে পার্স করা হয়েছে: ${cues.length} টি cue লাইন পাওয়া গেছে।`);
+
+  // Also sync a standard voiceover.srt copy in public for reference
+  try {
+    fs.copyFileSync(srtPath, path.join(publicDir, "voiceover.srt"));
+  } catch (e) {}
+
+  console.log(`✅ [SRT] Found and parsed: '${foundSrtFilename}' (${cues.length} cues).`);
   if (cues.length > 0) {
-    console.log(`   ভিডিওর মোট কথ্য সময়: ${cues[cues.length - 1].end.toFixed(2)} সেকেন্ড।`);
+    console.log(`   Total spoken duration: ${cues[cues.length - 1].end.toFixed(2)} seconds.`);
   }
 } else {
-  console.warn("⚠️ [SRT] input-content/voiceover.srt ফাইল পাওয়া যায়নি!");
-  console.warn("   ডিফল্ট ডামি কিউ দিয়ে ফাইল তৈরি করা হচ্ছে।");
+  console.warn("⚠️ [SRT] No .srt file found in input-content/ folder!");
+  console.warn("   Generating fallback dummy cues.");
 }
 
-const cuesCode = `// এই ফাইলটি scripts/prepare-video.mjs দিয়ে স্বয়ংক্রিয়ভাবে তৈরি হয়েছে।
-// সরাসরি এডিট করবেন না। input-content/voiceover.srt আপডেট করে 'npm run prepare-video' চালান।
+const cuesCode = `// Generated automatically by scripts/prepare-video.mjs
+// Do not edit directly. Update your .srt file in input-content/ and run 'npm run prepare-video'.
 
 export type Cue = {
-  /** সাবটাইটেল লাইনের ক্রমিক নম্বর (১ থেকে শুরু) */
+  /** Subtitle cue line number (1-based) */
   n: number;
-  /** লাইন শুরুর সময় (সেকেন্ডে) */
+  /** Start time in seconds */
   start: number;
-  /** লাইন শেষের সময় (সেকেন্ডে) */
+  /** End time in seconds */
   end: number;
-  /** লাইনে উচ্চারিত পাঠ্য/টেক্সট */
+  /** Spoken text */
   text: string;
 };
 
@@ -77,34 +94,40 @@ export const CUES: Cue[] = ${JSON.stringify(cues, null, 2)};
 
 fs.writeFileSync(path.join(generatedDir, "cues.ts"), cuesCode, "utf8");
 
-// ২. অডিও ফাইল স্ক্যান ও কপি
-const supportedAudioExts = [".mp3", ".wav", ".m4a", ".aac", ".ogg"];
+// 2. AUDIO FILE AUTO-DISCOVERY BY FORMAT/EXTENSION (.mp3, .wav, .m4a, .aac, .ogg, .flac)
+const supportedAudioExts = [".mp3", ".wav", ".m4a", ".aac", ".ogg", ".flac"];
 let foundAudioName = null;
 
 if (fs.existsSync(inputDir)) {
   const inputFiles = fs.readdirSync(inputDir);
-  const audioFile = inputFiles.find((f) => {
-    const ext = path.extname(f).toLowerCase();
-    return supportedAudioExts.includes(ext) && f.toLowerCase().startsWith("voiceover");
-  }) || inputFiles.find((f) => supportedAudioExts.includes(path.extname(f).toLowerCase()));
+
+  // Find any supported audio file regardless of name
+  const audioFile =
+    inputFiles.find((f) => {
+      const ext = path.extname(f).toLowerCase();
+      return supportedAudioExts.includes(ext) && f.toLowerCase().startsWith("voiceover");
+    }) ||
+    inputFiles.find((f) => supportedAudioExts.includes(path.extname(f).toLowerCase()));
 
   if (audioFile) {
     const ext = path.extname(audioFile).toLowerCase();
     const targetAudioName = `voiceover${ext}`;
     fs.copyFileSync(path.join(inputDir, audioFile), path.join(publicDir, targetAudioName));
     foundAudioName = targetAudioName;
-    console.log(`✅ [Audio] ভয়েসওভার অডিও পাওয়া গেছে: '${audioFile}' -> public/${targetAudioName}`);
+    console.log(`✅ [Audio] Voiceover audio detected: '${audioFile}' -> public/${targetAudioName}`);
   }
 }
 
 if (!foundAudioName) {
-  console.log("ℹ️ [Audio] কোনো ভয়েস অডিও পাওয়া যায়নি (ভিডিও নিঃশব্দে বা শুধু SFX দিয়ে চলবে)।");
+  console.log("ℹ️ [Audio] No audio file detected (video will play silently or with sound effects only).");
 }
 
-// ৩. input/assets স্ক্যান ও কপি
-const inputAssetsDir = path.join(inputDir, "assets");
+// 3. ASSETS AUTO-DISCOVERY (input-content/assets/ + any images in input-content/)
+const supportedImageExts = [".png", ".jpg", ".jpeg", ".svg", ".webp", ".gif"];
 const discoveredAssets = [];
 
+// A. Check input-content/assets/
+const inputAssetsDir = path.join(inputDir, "assets");
 function copyRecursive(src, dest, relPrefix = "") {
   if (!fs.existsSync(src)) return;
   const entries = fs.readdirSync(src, { withFileTypes: true });
@@ -121,21 +144,38 @@ function copyRecursive(src, dest, relPrefix = "") {
     }
   }
 }
-
 copyRecursive(inputAssetsDir, publicAssetsDir);
-console.log(`✅ [Assets] অতিরিক্ত অ্যাসেট/লোগো পাওয়া গেছে: ${discoveredAssets.length} টি।`);
 
-const assetsCode = `// এই ফাইলটি scripts/prepare-video.mjs দিয়ে স্বয়ংক্রিয়ভাবে তৈরি হয়েছে।
-// সরাসরি এডিট করবেন না।
+// B. Also auto-discover any image files placed directly in input-content/
+if (fs.existsSync(inputDir)) {
+  const rootFiles = fs.readdirSync(inputDir, { withFileTypes: true });
+  for (const file of rootFiles) {
+    if (file.isFile()) {
+      const ext = path.extname(file.name).toLowerCase();
+      if (supportedImageExts.includes(ext)) {
+        const destPath = path.join(publicAssetsDir, file.name);
+        fs.copyFileSync(path.join(inputDir, file.name), destPath);
+        if (!discoveredAssets.includes(file.name)) {
+          discoveredAssets.push(file.name);
+        }
+      }
+    }
+  }
+}
 
-/** প্রস্তুতকৃত ভয়েসওভার ফাইলের নাম (public ফোল্ডারে)। না থাকলে null */
+console.log(`✅ [Assets] Visual assets detected: ${discoveredAssets.length} file(s).`);
+
+const assetsCode = `// Generated automatically by scripts/prepare-video.mjs
+// Do not edit directly.
+
+/** Target voiceover filename in public/ (or null if silent) */
 export const VOICEOVER_FILE: string | null = ${foundAudioName ? JSON.stringify(foundAudioName) : "null"};
 
-/** input/assets/ ফোল্ডার থেকে পাওয়া সব ফাইল নেম */
+/** Discovered asset filenames from input-content/ */
 export const ASSETS = ${JSON.stringify(discoveredAssets, null, 2)} as const;
 `;
 
 fs.writeFileSync(path.join(generatedDir, "assets.ts"), assetsCode, "utf8");
 
-console.log("\n🚀 প্রস্তুতি সম্পন্ন! এখন প্রিভিউ দেখতে চালান: npm run studio");
+console.log("\n🚀 Preparation complete! Run 'npm run studio' to preview live.");
 console.log("==================================================");
