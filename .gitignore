@@ -1,1 +1,21 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Generated Video Outputs (MP4 & Test Images)
+generated-videos/*.mp4
+generated-videos/*.png
+!generated-videos/.gitkeep
+
+# Archived Videos
+archived-videos/*
+!archived-videos/.gitkeep
+!archived-videos/README.md
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
