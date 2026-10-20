@@ -1,0 +1,28 @@
+{
+  "name": "motion-graphics-engine",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Reusable Motion Graphics Engine for Remotion with Automatic SRT Sync",
+  "scripts": {
+    "prepare-video": "node scripts/prepare-video.mjs",
+    "studio": "remotion studio",
+    "render-video": "remotion render src/index.ts Main generated-videos/video.mp4",
+    "render": "remotion render src/index.ts Main generated-videos/video.mp4",
+    "new-video": "node scripts/new-video.mjs",
+    "generate-sound-effects": "node scripts/generate-sound-effects.mjs",
+    "sound-effects": "node scripts/generate-sound-effects.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.536",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.536"
+  },
+  "devDependencies": {
+    "@fontsource/hind-siliguri": "5.3.0",
+    "@fontsource/jetbrains-mono": "5.3.0",
+    "@types/react": "18.3.31",
+    "typescript": "5.6.3"
+  }
+}

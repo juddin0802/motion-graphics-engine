@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "code-documentation": {
+      "source": "aj-geddes/useful-ai-prompts",
+      "sourceType": "github",
+      "skillPath": "skills/code-documentation/SKILL.md",
+      "computedHash": "c713230f6630c4f01421a53653b6cd4ba391e195e4fa39de9ccf8d0194ddce4a"
+    },
+    "remotion-motion-graphics": {
+      "source": "haidrrrry/claude-remotion-skill",
+      "sourceType": "github",
+      "skillPath": "remotion-motion-graphics/SKILL.md",
+      "computedHash": "9f37670b538d1aad5549603da2cd9d67401016dd20c1d8a0c292e904a9f03fbf"
+    }
+  }
+}
