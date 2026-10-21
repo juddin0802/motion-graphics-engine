@@ -25,7 +25,7 @@ import { FRAME_RATE } from "../srt-timing";
 import { SFX_SOUND_ENABLED } from "../video-config";
 import { VectorIcon, type IconName } from "./vector-icons";
 
-export type Tone = "primary" | "accent" | "dim" | "danger";
+export type Tone = "primary" | "accent" | "dim" | "danger" | "warning";
 
 export const getToneColor = (t: Tone): string =>
   t === "primary"
@@ -34,17 +34,21 @@ export const getToneColor = (t: Tone): string =>
       ? theme.colors.accent
       : t === "danger"
         ? theme.colors.danger
-        : theme.colors.textDim;
+        : t === "warning"
+          ? "#F59E0B"
+          : theme.colors.textDim;
 export const toneColor = getToneColor;
 
 export const getToneSoftBackground = (t: Tone): string =>
   t === "primary"
-    ? theme.colors.primarySoft
+    ? "rgba(108, 124, 255, 0.16)"
     : t === "accent"
-      ? theme.colors.accentSoft
+      ? "rgba(52, 211, 153, 0.16)"
       : t === "danger"
-        ? theme.colors.dangerSoft
-        : theme.colors.panel;
+        ? "rgba(244, 63, 94, 0.16)"
+        : t === "warning"
+          ? "rgba(245, 158, 11, 0.16)"
+          : "rgba(255, 255, 255, 0.08)";
 export const toneSoft = getToneSoftBackground;
 
 const CLAMP_SETTINGS = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;

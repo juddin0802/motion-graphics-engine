@@ -1,286 +1,178 @@
-// এই ফাইলটি scripts/prepare-video.mjs দিয়ে স্বয়ংক্রিয়ভাবে তৈরি হয়েছে।
-// সরাসরি এডিট করবেন না। input-content/voiceover.srt আপডেট করে 'npm run prepare-video' চালান।
+// Generated automatically by scripts/prepare-video.mjs
+// Do not edit directly. Update your .srt file in input-content/ and run 'npm run prepare-video'.
 
 export type Cue = {
-  /** সাবটাইটেল লাইনের ক্রমিক নম্বর (১ থেকে শুরু) */
+  /** Subtitle cue line number (1-based) */
   n: number;
-  /** লাইন শুরুর সময় (সেকেন্ডে) */
+  /** Start time in seconds */
   start: number;
-  /** লাইন শেষের সময় (সেকেন্ডে) */
+  /** End time in seconds */
   end: number;
-  /** লাইনে উচ্চারিত পাঠ্য/টেক্সট */
+  /** Spoken text */
   text: string;
 };
 
 export const CUES: Cue[] = [
   {
     "n": 1,
-    "start": 0.24,
-    "end": 1.16,
-    "text": "আপনি ঘুমিয়ে আছেন,"
+    "start": 0.08,
+    "end": 5.38,
+    "text": "প্রতিদিন social media নিয়মিত post করতে চান? কিন্তু topic নির্বাচন থেকে শুরু করে"
   },
   {
     "n": 2,
-    "start": 2.14,
-    "end": 3.48,
-    "text": "বন্ধুদের সাথে আড্ডা দিচ্ছেন"
+    "start": 5.38,
+    "end": 11.32,
+    "text": "প্রতিটি platform জন্য আলাদা content লিখতে গিয়েই অনেক সময় চলে যায়। একই post সব"
   },
   {
     "n": 3,
-    "start": 4.08,
-    "end": 5.34,
-    "text": "কিংবা travel করছেন।"
+    "start": 11.32,
+    "end": 16.92,
+    "text": "platform ব্যবহার করলে content মান ঠিক রাখা কঠিন। আবার প্রতিটি platform জন্য"
   },
   {
     "n": 4,
-    "start": 6.22,
-    "end": 10.54,
-    "text": "এদিকে একজন customer আপনাকে message দিয়ে দ্রুত reply না পেয়ে চলে গেল অন্য কারোর"
+    "start": 16.94,
+    "end": 22.58,
+    "text": "আলাদাভাবে লিখতে গেলে কাজের চাপ বেড়ে যায়। ফলে ব্যস্ততার সময় নিয়মিত post করা আর"
   },
   {
     "n": 5,
-    "start": 10.54,
-    "end": 10.82,
-    "text": "কাছে।"
+    "start": 22.58,
+    "end": 29,
+    "text": "হয়ে ওঠে না। এই সমস্যার সমাধানে আমি তৈরি করেছি social media post automation। এটি"
   },
   {
     "n": 6,
-    "start": 11.6,
-    "end": 16.239,
-    "text": "নিশ্চয়ই এমন অভিজ্ঞতার সম্মুখীন হয়ে আপনারাও অনেক সময় সম্ভাব্য customer এবং"
+    "start": 29,
+    "end": 34,
+    "text": "প্রতিদিন নির্দিষ্ট সময়ে আপনার content calendar থেকে একটি topic নিয়ে প্রতিটি"
   },
   {
     "n": 7,
-    "start": 16.239,
-    "end": 17.5,
-    "text": "ব্যবসার revenue হারিয়েছেন।"
+    "start": 34,
+    "end": 40.04,
+    "text": "social media platform জন্য আলাদা post তৈরি করে রাখে। ফলে প্রতিদিন নতুন করে বসে সব"
   },
   {
     "n": 8,
-    "start": 18.34,
-    "end": 21.74,
-    "text": "এই সমস্যার সমাধানে তৈরি করেছি Multi-Channel Support Automation।"
+    "start": 40.04,
+    "end": 45.1,
+    "text": "post লেখার পরিবর্তে আপনি তৈরি হওয়া content review ও approve করার দিকে মনোযোগ"
   },
   {
     "n": 9,
-    "start": 22.46,
-    "end": 27.68,
-    "text": "একটি AI agent যা Facebook Messenger ও WhatsApp আপনার হয়ে customer's message's"
+    "start": 45.1,
+    "end": 51.22,
+    "text": "দিতে পারেন। এটি যেভাবে কাজ করে। content calendar থেকে পরবর্তী ready topic নির্বাচন"
   },
   {
     "n": 10,
-    "start": 27.7,
-    "end": 29.96,
-    "text": "উত্তর দেবে। এমনকি আপনি ব্যস্ত থাকলেও।"
+    "start": 51.22,
+    "end": 57.08,
+    "text": "করে। একই topic যেন একাধিকবার process না হয় সেজন্য শুরুতেই status processing করে"
   },
   {
     "n": 11,
-    "start": 30.62,
-    "end": 31.66,
-    "text": "কী কী feature আছে এর মধ্যে?"
+    "start": 57.08,
+    "end": 63.02,
+    "text": "দেয়। AI আপনার দেওয়া topic ও নির্দেশনা অনুযায়ী প্রতিটি platform জন্য আলাদা post"
   },
   {
     "n": 12,
-    "start": 32.659,
-    "end": 33.54,
-    "text": "Automatic replies,"
+    "start": 63.02,
+    "end": 69.1,
+    "text": "লেখে। একটি post copy করে অন্য platform ব্যবহার করা হয় না। প্রতিটি post সংশ্লিষ্ট"
   },
   {
     "n": 13,
-    "start": 34.18,
-    "end": 37.06,
-    "text": "এটা Messenger ও WhatsApp স্বয়ংক্রিয়ভাবে reply করে।"
+    "start": 69.1,
+    "end": 75.24,
+    "text": "platform tone, লেখার ধরন ও character limit অনুসরণ করে তৈরি হয়। আপনার brief"
   },
   {
     "n": 14,
-    "start": 37.82,
-    "end": 38.84,
-    "text": "Personalized messaging,"
+    "start": 75.24,
+    "end": 81.88,
+    "text": "উল্লেখ নেই এমন পরিসংখ্যান, customer story বা সংখ্যা AI নিজে থেকে যোগ করে না। তৈরি"
   },
   {
     "n": 15,
-    "start": 39.56,
-    "end": 43.88,
-    "text": "Messenger বা WhatsApp নতুন message এলেই AI সেটি detect করে এবং customer's নাম"
+    "start": 81.88,
+    "end": 88,
+    "text": "হওয়া post গুলো media URL, schedule ও approval status সহ Google Sheets save হয়।"
   },
   {
     "n": 16,
-    "start": 43.88,
-    "end": 46.34,
-    "text": "collect করে personalized message লিখে reply দেয়।"
+    "start": 88,
+    "end": 93.98,
+    "text": "সব post সফলভাবে save হলে topic status written হয়ে যায়। কোন error হলে failed"
   },
   {
     "n": 17,
-    "start": 47.2,
-    "end": 48.06,
-    "text": "Accurate information,"
+    "start": 93.98,
+    "end": 100.68,
+    "text": "status ও error তথ্য record করা হয়। সমস্যা সমাধানের পর status আবার ready করলে topic"
   },
   {
     "n": 18,
-    "start": 48.72,
-    "end": 52.94,
-    "text": "কোনো প্রকার অনুমান ছাড়াই Google Sheet থেকে service's তথ্য ও price এবং customer"
+    "start": 100.68,
+    "end": 105.48,
+    "text": "পুনরায় process করা যায়। প্রয়োজন অনুযায়ী system নতুন social media platform"
   },
   {
     "n": 19,
-    "start": 52.94,
-    "end": 58.52,
-    "text": "message's ধরন দেখে AI উত্তর দেয়। Multi-language support, customer যে ভাষায়"
+    "start": 105.48,
+    "end": 110.66,
+    "text": "যুক্ত করা যায়। পুরো process চলে daily schedule trigger থেকে শুরু করে topic"
   },
   {
     "n": 20,
-    "start": 58.52,
-    "end": 61.72,
-    "text": "message করবেন, AI সেই ভাষাতেই reply দিবে।"
+    "start": 110.66,
+    "end": 116.02,
+    "text": "নির্বাচন, AI দিয়ে post তৈরি, Google Sheets save এবং status update করার"
   },
   {
     "n": 21,
-    "start": 62.62,
-    "end": 68.1,
-    "text": "Conversation memory, customer's chat history মনে রাখে। তাই বারবার একই প্রশ্ন"
+    "start": 116.02,
+    "end": 122.18,
+    "text": "মাধ্যমে। এরপর post গুলো আপনার review জন্য প্রস্তুত থাকে। সবচেয়ে গুরুত্বপূর্ণ বিষয়"
   },
   {
     "n": 22,
-    "start": 68.1,
-    "end": 68.7,
-    "text": "করতে হয় না।"
+    "start": 122.18,
+    "end": 128.06,
+    "text": "হলো প্রতিটি post status শুরুতে pending থাকে। আপনি review করে approve না করা"
   },
   {
     "n": 23,
-    "start": 69.56,
-    "end": 75.02,
-    "text": "Smart pricing, কোনো product বা service's নির্দিষ্ট price না থাকলে AI বানিয়ে কিছু"
+    "start": 128.06,
+    "end": 134,
+    "text": "পর্যন্ত কোন post publish হয় না। অর্থাৎ content লেখার কাজ automation করবে। কিন্তু"
   },
   {
     "n": 24,
-    "start": 75.02,
-    "end": 79.5,
-    "text": "বলে না। প্রয়োজনে quotation জন্য customerকে নির্দিষ্ট page পাঠায়।"
+    "start": 134,
+    "end": 140.46,
+    "text": "কি publish হবে সেই সিদ্ধান্ত আপনারই থাকবে। এই automation digital marketing agency,"
   },
   {
     "n": 25,
-    "start": 80.42,
-    "end": 81.4,
-    "text": "Same channel reply,"
+    "start": 140.46,
+    "end": 146.44,
+    "text": "SaaS founder, freelancer, consultant, online shop এবং নিয়মিত social media post"
   },
   {
     "n": 26,
-    "start": 82.02,
-    "end": 86.92,
-    "text": "customer Messenger message দিলে Messenger reply যাবে। WhatsApp message দিলে WhatsApp"
+    "start": 146.44,
+    "end": 152.32,
+    "text": "করতে হয় এমন যেকোনো ব্যবসার জন্য উপযোগী। আপনার ব্যবসার জন্য এমন automation setup"
   },
   {
     "n": 27,
-    "start": 86.92,
-    "end": 87.6,
-    "text": "reply যাবে।"
-  },
-  {
-    "n": 28,
-    "start": 88.42,
-    "end": 89.18,
-    "text": "Human takeover,"
-  },
-  {
-    "n": 29,
-    "start": 89.82,
-    "end": 94.78,
-    "text": "আপনি যখন নিজে customerকে reply করতে চাইবেন, #pause লিখে নির্দিষ্ট customer"
-  },
-  {
-    "n": 30,
-    "start": 94.78,
-    "end": 100.82,
-    "text": "জন্য bot বন্ধ করুন আর #resume লিখে আবার চালু করুন। অন্য customer's chat"
-  },
-  {
-    "n": 31,
-    "start": 100.82,
-    "end": 102.06,
-    "text": "স্বাভাবিকভাবেই running থাকবে।"
-  },
-  {
-    "n": 32,
-    "start": 103.2,
-    "end": 104.48,
-    "text": "এটি কাদের জন্য উপযোগী?"
-  },
-  {
-    "n": 33,
-    "start": 105.16,
-    "end": 106.66,
-    "text": "Service business ও agency,"
-  },
-  {
-    "n": 34,
-    "start": 107.36,
-    "end": 108.78,
-    "text": "freelancer ও consultant,"
-  },
-  {
-    "n": 35,
-    "start": 109.44,
-    "end": 110.98,
-    "text": "online shop ও e-commerce,"
-  },
-  {
-    "n": 36,
-    "start": 111.6,
-    "end": 115.3,
-    "text": "coaching center ও clinic, অন্যান্য online ভিত্তিক ব্যবসা।"
-  },
-  {
-    "n": 37,
-    "start": 116.26,
-    "end": 118.3,
-    "text": "আপনার ব্যবসার জন্য কেন এটি গুরুত্বপূর্ণ?"
-  },
-  {
-    "n": 38,
-    "start": 119.22,
-    "end": 124.6,
-    "text": "আপনার customer দ্রুত উত্তর পাবে। বারবার একই প্রশ্নের উত্তর দিতে হবে না। Messenger"
-  },
-  {
-    "n": 39,
-    "start": 124.6,
-    "end": 126.7,
-    "text": "ও WhatsApp support management সহজ হবে।"
-  },
-  {
-    "n": 40,
-    "start": 127.42,
-    "end": 132.68,
-    "text": "Service ও price সম্পর্কে নির্ভুল তথ্য দেওয়া সহজ হবে। আপনার সময় বাঁচবে এবং"
-  },
-  {
-    "n": 41,
-    "start": 132.68,
-    "end": 137.78,
-    "text": "manual কাজ কমবে। প্রয়োজনে যেকোনো সময় আপনি নিজে conversation দায়িত্ব নিতে"
-  },
-  {
-    "n": 42,
-    "start": 137.78,
-    "end": 138.16,
-    "text": "পারবেন।"
-  },
-  {
-    "n": 43,
-    "start": 139.14,
-    "end": 144,
-    "text": "আপনার ব্যবসার জন্য এমন automation system তৈরি করতে চাইলে pricing ও বিস্তারিত জানতে"
-  },
-  {
-    "n": 44,
-    "start": 144,
-    "end": 144.88,
-    "text": "আমাকে DM করুন।"
-  },
-  {
-    "n": 45,
-    "start": 145.66,
-    "end": 146.14,
-    "text": "ধন্যবাদ।"
+    "start": 152.32,
+    "end": 155.9,
+    "text": "করতে চাইলে pricing ও বিস্তারিত জানতে আমাকে DM করুন।"
   }
 ];

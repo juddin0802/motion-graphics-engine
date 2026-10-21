@@ -4,19 +4,25 @@
   "private": true,
   "description": "Reusable Motion Graphics Engine for Remotion with Automatic SRT Sync",
   "scripts": {
+    "archive-old-video": "node scripts/archive-old-video.mjs",
+    "archive": "node scripts/archive-old-video.mjs",
+    "new-video": "node scripts/archive-old-video.mjs",
+    "prepare-new-video": "node scripts/prepare-video.mjs",
     "prepare-video": "node scripts/prepare-video.mjs",
+    "prepare": "node scripts/prepare-video.mjs",
     "studio": "remotion studio",
     "render-video": "remotion render src/index.ts Main generated-videos/video.mp4",
     "render": "remotion render src/index.ts Main generated-videos/video.mp4",
-    "new-video": "node scripts/new-video.mjs",
     "generate-sound-effects": "node scripts/generate-sound-effects.mjs",
     "sound-effects": "node scripts/generate-sound-effects.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@remotion/cli": "4.0.536",
+    "lucide-react": "^1.60.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-icons": "^5.7.0",
     "remotion": "4.0.536"
   },
   "devDependencies": {

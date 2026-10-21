@@ -13,9 +13,16 @@ export type IconName =
   | "moon" | "chat" | "plane" | "clock" | "check" | "x" | "user" | "briefcase" | "bag" | "laptop"
   | "pulse" | "cap" | "globe" | "db" | "sheet" | "bot" | "pause" | "play" | "link" | "tag" | "send"
   | "shuffle" | "filter" | "zap" | "hourglass" | "target" | "inbox" | "repeat" | "trendDown"
-  | "userCheck" | "hash" | "bubble" | "bell" | "arrow" | "webhook" | "branch" | "edit";
+  | "userCheck" | "hash" | "bubble" | "bell" | "arrow" | "webhook" | "branch" | "edit" | "sparkles";
 
 const ICON_SVG_PATHS: Record<IconName, React.ReactNode> = {
+  sparkles: (
+    <>
+      <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
+      <path d="M19 4v4" />
+      <path d="M21 6h-4" />
+    </>
+  ),
   moon: <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />,
   chat: <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />,
   bubble: <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />,

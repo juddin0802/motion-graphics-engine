@@ -44,12 +44,12 @@ Users create videos directly from the AI chat interface (Antigravity IDE / VS Co
 
 1. **Explicit Archive Command:**
    - If the user says *"আগের ভিডিও আর্কাইভ করো"*, *"আর্কাইভে মুভ করো"*, or *"আর্কাইভ করে দাও"*, immediately run:
-     `node scripts/new-video.mjs`
+     `node scripts/archive-old-video.mjs` (or `npm run archive-old-video`)
      and inform the user in Bengali that the previous video is safely archived in `archived-videos/`.
 
 2. **Auto-Archive on New Video Request:**
    - Whenever the user provides/attaches new content or asks for a new video, **CHECK FIRST** if `src/video/scenes/` contains existing custom scenes or `input-content/voiceover.srt` has a previous video.
-   - If previous work exists, **AUTOMATICALLY RUN** `node scripts/new-video.mjs` to archive the old project into `archived-videos/` before placing new files!
+   - If previous work exists, **AUTOMATICALLY RUN** `node scripts/archive-old-video.mjs` to archive the old project into `archived-videos/` before placing new files!
 
 3. **Auto-Save Attached Content from Chat Prompt:**
    - When the user attaches files to the chat prompt (via `Media` / `+` attachment) or provides raw text in the prompt:
@@ -59,7 +59,7 @@ Users create videos directly from the AI chat interface (Antigravity IDE / VS Co
      - Save any user guidelines, topic description, or color wishes to `input-content/brief.md`.
 
 4. **Auto-Run Preparation:**
-   - Run `npm run prepare-video` automatically in the terminal so `src/generated/cues.ts` and `src/generated/assets.ts` are immediately generated.
+   - Run `npm run prepare-new-video` automatically in the terminal so `src/generated/cues.ts` and `src/generated/assets.ts` are immediately generated.
 
 ### Step 1: Analyze Script & Assets
 1. Inspect the parsed cues in `src/generated/cues.ts` and brief in `input-content/brief.md`.
@@ -125,3 +125,20 @@ Once colors are determined:
    - The 5-layer stack in `src/video-main-composition.tsx` must be preserved.
 5. **No Linear Motion:**
    - Always use `theme.spring.snappy`, `theme.spring.smooth`, `theme.spring.bouncy`, or `theme.ease.out` / `theme.ease.inOut`.
+6. **User Image Deconstruction Protocol (Mandatory When User Uploads/Provides Images):**
+   - **Never display the user's uploaded image as a static flat whole image or ignore it.**
+   - If the user provides an image (workflow, screenshot, dashboard, diagram, architecture chart) in `input-content/assets/` or prompt:
+     - **Break down the image into its component blocks/sections/nodes** (e.g. Webhook, Filter, AI Agent, DB Memory, Switching, Output nodes).
+     - **Animate those blocks individually as rich motion graphics** (interactive glass cards, glowing nodes, animated wires, pulsing data packets, word reveals) **synchronized with the voiceover cues**.
+   - **If no image is provided**, use bespoke vector iconography, kinetic typography, and theme-based motion graphics layouts.
+7. **Visual-First Protocol (Zero Text Slides):**
+   - The voiceover audio does the talking; the screen is NOT a PowerPoint presentation.
+   - Never fill the screen with large centered paragraph text.
+   - 90–95% of the screen must be dedicated to functional visual motion graphics and connected diagrams:
+     - **Content Calendar**: Full visual Google Sheets UI table with rows, statuses, and live extraction wire.
+     - **Social Media**: Central automation trigger node branching with glowing electrical wires to Facebook, Instagram, LinkedIn, X, and Threads.
+     - **Workflow / Automation**: Interactive n8n node pipelines with pulsing data packets.
+     - **Approval**: Interactive glass review card with toggle switch (Pending -> Approved) and human check.
+     - **Payment**: Connected payment hub with authentic bKash origami bird, Nagad, Stripe, and Cards.
+   - Spoken subtitle cues must remain in a minimal, sleek floating glass caption pill at the bottom.
+
